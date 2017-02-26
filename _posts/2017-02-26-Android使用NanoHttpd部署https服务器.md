@@ -1,5 +1,7 @@
 ---
 layout: post
+categories: HTTPS相关
+keywords: NanoHttpd, 手机, HttpServer
 ---
 
 按照这个[链接](https://github.com/NanoHttpd/nanohttpd) 在代码中include NanoHttpd库
