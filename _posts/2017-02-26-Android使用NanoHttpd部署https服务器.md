@@ -1,5 +1,5 @@
 ---
-layout: article
+layout: post
 ---
 
 按照这个[链接](https://github.com/NanoHttpd/nanohttpd) 在代码中include NanoHttpd库

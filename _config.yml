@@ -1,4 +1,104 @@
-title: 陈顺的博客
-description: 写写代码，看看书
-google_analytics:
-theme: jekyll-theme-cayman
+# ---------------- #
+#   Main Configs   #
+# ---------------- #
+date_format: "ordinal"
+title: 陈顺
+subtitle: "什么时候能不写代码"
+description: "陈顺的个人博客"
+keywords: 代码
+timezone: Asia/Shanghai
+encoding: "utf-8"
+side_bar_repo_limit: 5
+
+# ---------------- #
+#      Author      #
+# ---------------- #
+author: 陈顺
+location: Beijing, China
+
+# ---------------- #
+#    Navigation    #
+# ---------------- #
+navs:
+  -
+    href: /
+    label: 首页
+
+  -
+    href: /categories/
+    label: 分类
+
+  -
+    href: /wiki/
+    label: 维基
+
+  -
+    href: /links/
+    label: 链接
+
+  -
+    href: /about/
+    label: 关于
+
+# ---------------- #
+#       RSS        #
+# ---------------- #
+subscribe_rss: /feed.xml
+
+# ---------------- #
+#      Jekyll      #
+# ---------------- #
+markdown: kramdown
+kramdown:
+    input: GFM
+highlighter: rouge
+paginate: 8
+lsi: false
+quiet: false
+excerpt_separator: "\n\n"
+permalink: /:year/:month/:day/:title/
+gems:
+    - jekyll-github-metadata
+    - rouge
+#     - jekyll-html-pipeline
+    - jekyll-paginate
+    - jekyll-sitemap
+    - jekyll-feed
+    - jemoji
+#     - jekyll-mentions
+collections:
+    wiki:
+        output: true
+        permalink: /wiki/:path/
+
+repository: ichenshun/ichenshun.github.io
+
+# ---------------- #
+#      Socials     #
+# ---------------- #
+github_username: ichenshun
+
+# ---------------- #
+#      Comments    #
+# ---------------- #
+# support provider: disqus, duoshuo
+comments_provider: disqus
+# !!!重要!!! 请修改下面两个用户名为你自己申请的
+# !!!Important!!! Please modify usernames below to yours
+#duoshuo_username: ichenshun
+#disqus_username: ichenshun
+# 在使用 disqus 的时候可点击显示多说评论框
+lazy_load_duoshuo: true
+
+# ---------------- #
+#    Analytics     #
+# ---------------- #
+#google:
+#    analytics_id: UA-80669434-1
+
+# ---------------- #
+#      Datas       #
+# ---------------- #
+#skill_software_keywords: [Java, C++, Python, Design Patterns]
+#skill_mobile_app_keywords: [Android, Reverse Engineering]
+#skill_windows_keywords: [Win32 SDK, DuiLib, WTL, COM, WinDbg]
