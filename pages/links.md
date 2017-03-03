@@ -10,6 +10,7 @@ permalink: /links/
 
 > God made relatives. Thank God we can choose our friends.
 
+* [Android梦想特工队](http://www.wxtlife.com/)
 * [Light.Moon](http://light3moon.com)
 * [Gityuan](http://gityuan.com/)
 * [Andy.Lee's Blog](http://huaqianlee.github.io/)
