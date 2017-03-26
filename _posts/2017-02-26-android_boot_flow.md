@@ -9,7 +9,7 @@ keywords: Android, 启动, 流程, 高通, APPS
 
 先看看整个启动流程图（图片来源：[Andy.Lee's Blog](http://huaqianlee.github.io/2015/08/23/Android/%E9%AB%98%E9%80%9AAndroid%E8%AE%BE%E5%A4%87%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90-%E4%BB%8Epower-on%E4%B8%8A%E7%94%B5%E5%88%B0Home-Lanucher%E5%90%AF%E5%8A%A8/) ）
 
-![](../../../images/2017-02-26-android_boot_flow/blogbootflow.png)
+![](../../../../images/2017-02-26-android_boot_flow/blogbootflow.png)
 
 下面是针对这一问题，提出的一些子问题：
 
