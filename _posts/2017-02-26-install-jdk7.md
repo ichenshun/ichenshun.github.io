@@ -1,3 +1,9 @@
+---
+layout: post
+title: Ubuntu 16.04 安装 jdk 7
+categories: [jdk]
+---
+
 Ubuntu 16.04 安装 jdk 7
 
 ```shell
