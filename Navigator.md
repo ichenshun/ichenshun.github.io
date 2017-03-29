@@ -6,4 +6,4 @@
 
 Product
 
-[Blog](http://agmbat.com/blog.html)
+[Blog](http://agmbat.com/blog/)
