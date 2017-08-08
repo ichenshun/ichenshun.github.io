@@ -1,0 +1,14 @@
+---
+layout: post
+title: Doclava分析
+categories: [Android]
+keywords: Android, Doclava
+---
+
+Javadoc扫描源文件生成RootDoc对象传递给Doclava。
+
+Docklava从start(RootDoc)开始，调用Converter.makeInfo(RootDoc)生成类列表，这个列表随后被用于生成api文件和stub文件。Converter首先通过RootDoc获取源码文件中定义的所有类（不包括inner class），然后对这些类逐个分析，加载引用到的外部类，这些外部类不在源文件中定义，而是在classpath中的jar文件里定义。Converter将源文件中定义的类和引用到的外部类合起来生成类列表。
+
+接着Doclava调用Stubs.writeStubsAndApi将上一步中生成的类列表写入到api文件和stub文件中。Stubs将这个列表进行裁剪，剔除掉那些不适合保留的类。裁剪的过程是这样的：遍历类列表中的每一个类，判断它是否适合保留，如果不适合就剔除掉，如果适合就判断父类、成员变量和成员方法是否适合保留，如果适合，器父类、适合保留的成员变量的类型和成员方法的参数类型以及返回类型也都自动适合保留。
+
+适合保留的条件通过ClassInfo.checkLevel和ClassInfo.isInclude判断的，checkLevel要求类必须是public或protected的，并且注释中没有@hide或@remove标签，isInclude要求类必须是在源文件中定义的。但判断一个类的引用类时，不会检查isInclude，所以当一个适合保留的类引用了一个外部类，尽管这个外部类没有在源文件中定义，仍然会被保留。当一个适合保留的类引用了一个加了@hide标签的类时，这个类也会被自动保留。另外jar中定义的类都是没有@hide标签或@remove标签的。

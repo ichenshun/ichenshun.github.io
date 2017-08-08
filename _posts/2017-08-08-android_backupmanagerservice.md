@@ -1,0 +1,10 @@
+---
+layout: post
+title: Activity重新创建后Intent的状态
+categories: [Android]
+keywords: Android, Activity, Recreate
+---
+
+由于横竖屏切换等Config change导致的Activity重新创建时，Intent的状态变化是这样的，系统给App发送通知需要重启Activity，App的ActivityThread收到通知后，将需要重启的Activity当前的intent保存下来，然后让Activity执行onPause到onDestroy的流程来销毁当前Activity，然后重新创建Activity的实例，并执行attach操作，如果将之前保存的Intent不是空值的话，就把之前保存的Intent扔给这个Activity。
+
+如果在Activity运行期间，通过setIntent改变了Activity的Intent，那么重启Activity时就会用最后设置的Intent作为自己的Intent。但如果设置为空值的化，就会用初始的Intent作为自己的Intent。

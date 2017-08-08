@@ -1,0 +1,14 @@
+---
+layout: post
+title: Android界面是什么时候显示出来的
+categories: [Android]
+keywords: Android, GUI
+---
+
+显示器会按一定的频率从FrameBuffer获取图形数据显示到屏幕上，一般是每秒60次。但FrameBuffer的数据在交给显示器之前，需要先由SurfaceFlinger进行合成处理，因为屏幕上会同时显示好几个窗口，比如状态栏、导航栏和应用窗口，SurfaceFlinger将这些窗口提交过来的FrameBuffer合成为一个FrameBuffer，然后再交给显示器。对应用窗口来讲，一个FrameBuffer不够用，因为将FrameBuffer提交给SurfaceFlinger后，可能开始绘制下一帧界面，但FrameBuffer已经提交给了SurfaceFlinger，所以需要再申请创建一块FrameBuffer，用来存放该帧的界面数据。如果界面绘制的比较快，可能会再申请创建第三块甚至更多的FrameBuffer。这些FrameBuffer会被组织成队列，叫做BufferQueue，SurfaceFlinger从BufferQueue中获取FrameBuffer，进行合成。合成的过程是交给HardwareCompositor处理，处理完后再交给显示器显示。
+
+显示器每次需要从FrameBuffer获取数据时，就会发送信号给SurfaceFlinger，SurfaceFlinger收到信号后，就从所有可见的窗口的BufferQueue中收集绘制好的FrameBuffer，然后提交给HardwareCompositor进行合成，合成后直接交个显示器显示。
+
+也就是当调用了View.draw方法后，界面的图形数据就保存到了FrameBuffer，等Surface收到来自显示器的信号后，就会将FrameBuffer与其他窗口的FrameBuffer合成，然后提交给显示器显示。
+
+App将绘制命令组织组织成队列传递给GL驱动，GL驱动执行命令将渲染后的结果输出到一个Buffer中。Surface是一个Buffer池，准确说是队列，由生产者和消费者共享。App是生产者，SurfaceFlinger是消费者。对于GLES渲染到Surface这种情形，队列中有两个或三个Buffer。Buffer是由Gralloc分配的，其头部描述了内容的属性（宽度、高度、像素格式等），内容区域由原始的像素构成

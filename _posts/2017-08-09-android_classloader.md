@@ -1,0 +1,34 @@
+---
+layout: post
+title: Android中的ClassLoader
+categories: [Android]
+keywords: Android, ClassLoader
+---
+
+Android中有如下ClassLoader
+
+BootClassLoader，代表了VM中用于加载VM内建类的ClassLoader，比如加载基本类型的Class对象
+
+BaseDexClassLoader，定义了可以从dex文件或包含dex文件的zip、apk、jar文件中加载了的ClassLoader
+
+DexClassLoader
+
+PathClassLoader
+
+DexClassLoader和PathClassLoader继承自BaseDexClassLoader，两者唯一的区别是：DexClassLoader需要提供一个可写目录用来存放odex文件，而PathClassLoader不需要提供。
+
+ClassLoader使用了委派模式，概念模型如下：
+
+BootClassLoader <= SystemClassLoader <= AppClassLoader
+
+BootClassLoader是SystemClassLoader的Parent，SystemClassLoader是AppClassLoader的Parent。
+
+当AppClassLoader加载一个类时，会先查找VM是否已经加载了此类，如果没有加载，就委托给Parent ClassLoader，也就是SystemClassLoader加载，如果SystemClassLoader加载失败，那么AppClassLoader就尝试自己加载。SystemClassLoader在加载类时完全重复同样的过程，只不过委托的对象变成了BootClassLoader如果没有加载，BootClassLoader没有Parent，自直接加载类。
+
+在Android系统中BootClassLoader是ClassLoader中的一个内部类，实现调用的是VMClassLoader，SystemClassLoader是PathClassLoader的一个实例，dexPath来源于BOOTCLASSPATH环境变量，AppClassLoader也是PathClassLoader的一个实例，dexPath来源于App的apk文件以及通过userLibrary引用的系统库（路径一般是/system/framework/xxxx.jar）。
+
+举一个例子，假如App定义了一个类A，加载类A的请求传递过程是，AppClassLoader先查询缓存，缓存中没有就传递给SystemClassLoader，SystemClassLoader同样先查询缓存，缓存中没有，再传递给BootClassLoader，BootClassLoader仍然先查询缓存，缓存中没有，尝试自己处理请求，没找到，接着把请求往回传，传递给SystemClassLoader，SystemClassLoader尝试自己处理请求，没找到，回传给AppClassLoader，AppClassLoader在apk中找到了，返回找到的A的Class对象。
+
+有一个猜测需要验证，当多个APP运行在同一个进程时，如果两个APP中存在相同名称的类，因为每个APP都有自己的ClassLoader，因而会导致两个不同的ClassLoader去加载同一个类的错误。
+
+另一个问题，在调试时发现，ActivityThread在通过AppClassLoader加载App中的Activity时，当AppClassLoader尝试从VM缓存中查找是否已经加载过了，结果是这个类已经被加载过了，并且Activity中引用到的一些App定义的类，也可以中缓存中找到，这说明系统在之前某个时刻就已经把App的部分或全部类加载到虚拟机中了。但需要验证。
